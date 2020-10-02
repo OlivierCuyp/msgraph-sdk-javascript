@@ -16,6 +16,7 @@ import { HTTPClient } from "./HTTPClient";
 import { HTTPClientFactory } from "./HTTPClientFactory";
 import { ClientOptions } from "./IClientOptions";
 import { Options } from "./IOptions";
+import { Middleware } from "./middleware/IMiddleware";
 import { validatePolyFilling } from "./ValidatePolyFilling";
 
 export class Client {
@@ -93,7 +94,7 @@ export class Client {
 		} else if (clientOptions.authProvider !== undefined) {
 			httpClient = HTTPClientFactory.createWithAuthenticationProvider(clientOptions.authProvider);
 		} else if (clientOptions.middleware !== undefined) {
-			httpClient = new HTTPClient(...clientOptions.middleware);
+			httpClient = new HTTPClient(...(clientOptions.middleware as Middleware[]));
 		} else {
 			const error = new Error();
 			error.name = "InvalidMiddlewareChain";

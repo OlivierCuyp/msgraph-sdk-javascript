@@ -31,7 +31,7 @@ describe("Client.ts", () => {
 			try {
 				const options: ClientOptions = {
 					authProvider: dummyAuthProvider,
-					middleware: [dummyHTTPHandler],
+					middleware: dummyHTTPHandler,
 				};
 				const client: Client = Client.initWithMiddleware(options);
 				throw new Error("Something wrong with the ambiguity check");
@@ -51,7 +51,7 @@ describe("Client.ts", () => {
 
 		it("Should return client instance for a custom middleware chain", () => {
 			const options: ClientOptions = {
-				middleware: [dummyHTTPHandler],
+				middleware: dummyHTTPHandler,
 			};
 			const client: Client = Client.initWithMiddleware(options);
 			assert.isTrue(client instanceof Client);

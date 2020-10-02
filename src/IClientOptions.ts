@@ -8,6 +8,7 @@
 import { AuthenticationProvider } from "./IAuthenticationProvider";
 import { FetchOptions } from "./IFetchOptions";
 import { Middleware } from "./middleware/IMiddleware";
+import { MiddlewareControl } from "./middleware/MiddlewareControl";
 
 /**
  * @interface
@@ -25,5 +26,5 @@ export interface ClientOptions {
 	debugLogging?: boolean;
 	defaultVersion?: string;
 	fetchOptions?: FetchOptions;
-	middleware?: Middleware[];
+	middleware?: Middleware | Middleware[];
 }
