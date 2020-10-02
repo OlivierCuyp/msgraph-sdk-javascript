@@ -25,5 +25,5 @@ export interface ClientOptions {
 	debugLogging?: boolean;
 	defaultVersion?: string;
 	fetchOptions?: FetchOptions;
-	middleware?: Middleware | Middleware[];
+	middleware?: Middleware[];
 }

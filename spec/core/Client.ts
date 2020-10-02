@@ -15,6 +15,7 @@ import { ClientOptions } from "../../src/IClientOptions";
 import { Options } from "../../src/IOptions";
 import { AuthenticationHandler } from "../../src/middleware/AuthenticationHandler";
 import { ChaosHandler } from "../../src/middleware/ChaosHandler";
+import { Middleware } from "../../src/middleware/IMiddleware";
 import { ChaosHandlerOptions } from "../../src/middleware/options/ChaosHandlerOptions";
 import { ChaosStrategy } from "../../src/middleware/options/ChaosStrategy";
 import { DummyAuthenticationProvider } from "../DummyAuthenticationProvider";
@@ -30,7 +31,7 @@ describe("Client.ts", () => {
 			try {
 				const options: ClientOptions = {
 					authProvider: dummyAuthProvider,
-					middleware: dummyHTTPHandler,
+					middleware: [dummyHTTPHandler],
 				};
 				const client: Client = Client.initWithMiddleware(options);
 				throw new Error("Something wrong with the ambiguity check");
@@ -50,7 +51,7 @@ describe("Client.ts", () => {
 
 		it("Should return client instance for a custom middleware chain", () => {
 			const options: ClientOptions = {
-				middleware: dummyHTTPHandler,
+				middleware: [dummyHTTPHandler],
 			};
 			const client: Client = Client.initWithMiddleware(options);
 			assert.isTrue(client instanceof Client);
@@ -74,7 +75,7 @@ describe("Client.ts", () => {
 			const authHandler = new AuthenticationHandler(new CustomAuthenticationProvider(provider));
 			const responseBody = "Test response body";
 			const options = new ChaosHandlerOptions(ChaosStrategy.MANUAL, "Testing middleware array", 200, 0, responseBody);
-			const middlewareArray = [authHandler, new ChaosHandler(options)];
+			const middlewareArray: Middleware[] = [authHandler, new ChaosHandler(options)];
 			const client = Client.initWithMiddleware({ middleware: middlewareArray });
 
 			const response = await client.api("me").get();
@@ -95,7 +96,7 @@ describe("Client.ts", () => {
 			authHandler.setNext(telemetryHandler);
 			telemetryHandler.setNext(chaosHandler);
 
-			const middlewareArray = [authHandler];
+			const middlewareArray: Middleware[] = [authHandler];
 			const client = Client.initWithMiddleware({ middleware: middlewareArray });
 
 			const response = await client.api("me").get();
